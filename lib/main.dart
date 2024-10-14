@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 
 void main() => runApp(const Quizzlers());
@@ -11,7 +9,7 @@ class Quizzlers extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       darkTheme: ThemeData.dark(),
-      home: QuizPage(),
+      home: const QuizPage(),
     );
   }
 }
@@ -26,17 +24,14 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<Icon> scoreKeeper = [
-    Icon(
-      Icons.check,
-      color: Colors.green,
-      size: 50.0,
-    ),
-    Icon(Icons.close, color: Colors.red, size: 50.0),
-    Icon(Icons.close, color: Colors.red, size: 50.0),
-    Icon(Icons.close, color: Colors.red, size: 50.0),
-    Icon(Icons.close, color: Colors.red, size: 50.0),
+  List<Icon> scoreKeeper = [];
+  List<String> questions = [
+    'You can lead a cow down stairs but not up stairs.',
+    'Approximately one quarter of human bones are in the feet.',
+    'A slug\'s blood is green.',
+    'Is TPain our President?'
   ];
+  int currentQuestionindex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -48,29 +43,21 @@ class _QuizPageState extends State<QuizPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                FlutterLogo(
+                const FlutterLogo(
                   style: FlutterLogoStyle.markOnly,
                   size: 80.0,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30.0,
                 ),
                 Expanded(
                   flex: 3,
                   child: Center(
-                    child: Text.rich(
-                      TextSpan(
-                          text: 'This is where the ',
-                          style: TextStyle(fontSize: 25.0),
-                          children: [
-                            TextSpan(
-                              text: 'question text ',
-                              style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  color: Colors.blue),
-                            ),
-                            TextSpan(text: 'will go.'),
-                          ]),
+                    child: Text(
+                      questions[currentQuestionindex],
+                      style: TextStyle(
+                          fontSize: 25.0,
+                          color: Color.fromARGB(255, 7, 48, 81)),
                     ),
                   ),
                 ),
@@ -79,13 +66,24 @@ class _QuizPageState extends State<QuizPage> {
                   child: TextButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.green),
-                      shape: MaterialStateProperty.all(StadiumBorder()),
+                      shape: MaterialStateProperty.all(const StadiumBorder()),
                     ),
-                    onPressed: () { scoreKeeper.add(Icon(Icons.check, color: Colors.green, size: 50.0));
+                    onPressed: () {
+                      setState(() {
+                        scoreKeeper.add(const Icon(Icons.check,
+                            color: Colors.green, size: 50.0));
+
+                        if (currentQuestionindex == 3) {
+                          currentQuestionindex = 0;
+                        } else {
+                          currentQuestionindex++;
+                        }
+                      });
+
                       // ignore: avoid_print
                       print('true button pressed');
                     },
-                    child: Text(
+                    child: const Text(
                       'True',
                       style: TextStyle(
                           color: Colors.white,
@@ -94,21 +92,26 @@ class _QuizPageState extends State<QuizPage> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 17.0,
                 ),
                 Expanded(
                     flex: 1,
                     child: TextButton(
                       onPressed: () {
+                        setState(() {
+                          scoreKeeper.add(const Icon(Icons.close,
+                              color: Colors.red, size: 50.0));
+                          currentQuestionindex++;
+                        });
                         // ignore: avoid_print
                         print('false button pressed');
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.red),
-                        shape: MaterialStateProperty.all(StadiumBorder()),
+                        shape: MaterialStateProperty.all(const StadiumBorder()),
                       ),
-                      child: Text('False',
+                      child: const Text('False',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 26.0,
@@ -124,18 +127,7 @@ class _QuizPageState extends State<QuizPage> {
   }
 }
 
-
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         backgroundColor: Colors.grey.shade900,
-//         body: SafeArea(
-//           child: Padding(
-//             padding: EdgeInsets.symmetric(horizontal: 10.0),
-//             child: QuizPage(),
-//           ),
+//        
 //         ),
 //       ),
 //     );
@@ -175,7 +167,7 @@ class _QuizPageState extends State<QuizPage> {
 //         Expanded(
 //           child: Padding(
 //             padding: EdgeInsets.all(15.0),
-            // child: TextButton(
+// child: TextButton(
 //               style: ButtonStyle(
 //                 backgroundColor: MaterialStateProperty.all(Colors.green),
 //                 foregroundColor: MaterialStateProperty.all(Colors.white),

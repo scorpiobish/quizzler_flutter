@@ -33,6 +33,8 @@ class _QuizPageState extends State<QuizPage> {
   ];
   int currentQuestionindex = 0;
 
+  List<bool> answers = [false, true, true, true];
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -65,19 +67,28 @@ class _QuizPageState extends State<QuizPage> {
                   flex: 1,
                   child: TextButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.green),
+                      backgroundColor: WidgetStateProperty.all(Colors.green),
                       shape: MaterialStateProperty.all(const StadiumBorder()),
                     ),
                     onPressed: () {
                       setState(() {
                         scoreKeeper.add(const Icon(Icons.check,
                             color: Colors.green, size: 50.0));
+                        bool correctAnswer = answers[currentQuestionindex];
+                        if (correctAnswer == true) {
+                          print('user got it right');
+                        } else {
+                          print('user got it wrong');
+                        }
 
                         if (currentQuestionindex == 3) {
                           currentQuestionindex = 0;
+                          // scoreKeeper.clear();
                         } else {
                           currentQuestionindex++;
                         }
+
+                        print('New current index: $currentQuestionindex');
                       });
 
                       // ignore: avoid_print
@@ -102,7 +113,20 @@ class _QuizPageState extends State<QuizPage> {
                         setState(() {
                           scoreKeeper.add(const Icon(Icons.close,
                               color: Colors.red, size: 50.0));
-                          currentQuestionindex++;
+                          bool correctAnswer = answers[currentQuestionindex];
+                          if (correctAnswer == false) {
+                            print('user got it right');
+                          } else {
+                            print('user got it wrong');
+                          }
+                          if (currentQuestionindex == 3) {
+                            currentQuestionindex = 0;
+                            // scoreKeeper.clear;
+                          } else {
+                            currentQuestionindex++;
+                          }
+
+                          print('New current index: $currentQuestionindex');
                         });
                         // ignore: avoid_print
                         print('false button pressed');
@@ -127,12 +151,7 @@ class _QuizPageState extends State<QuizPage> {
   }
 }
 
-//        
-//         ),
-//       ),
-//     );
-//   }
-// }
+
 
 // class QuizPage extends StatefulWidget {
 //   const QuizPage({super.key});

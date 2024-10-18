@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler_flutter/question.dart';
+import 'question.dart';
 
 void main() => runApp(const Quizzlers());
 
@@ -25,18 +27,31 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
-  List<String> questions = [
-    'You can lead a cow down stairs but not up stairs.',
-    'Approximately one quarter of human bones are in the feet.',
-    'A slug\'s blood is green.',
-    'Is TPain our President?'
-  ];
+  // 
+  // ];
   int currentQuestionindex = 0;
 
-  List<bool> answers = [false, true, true, true];
+  // List<bool> answers = [false, true, true, true];
+
+  List<Question> questions = [
+    Question(
+        questionText: 'You can lead a cow down stairs but not up stairs.',
+        questionAnswer: false),
+    Question(
+        questionText:
+            'Approximately one quarter of human bones are in the feet.',
+        questionAnswer: true),
+    Question(questionText: 'A slug\'s blood is green.', questionAnswer: true),
+    Question(questionText: 'TPain is our President?', questionAnswer: true),
+  ];
 
   @override
   Widget build(BuildContext context) {
+    Question currentQuestion = questions[currentQuestionindex];
+
+    String questionText = currentQuestion.questionText; 
+    bool questionAnswer = currentQuestion.questionAnswer;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -56,7 +71,7 @@ class _QuizPageState extends State<QuizPage> {
                   flex: 3,
                   child: Center(
                     child: Text(
-                      questions[currentQuestionindex],
+                      questionText, // = questions[currentQuestionindex].questionText
                       style: TextStyle(
                           fontSize: 25.0,
                           color: Color.fromARGB(255, 7, 48, 81)),
@@ -68,16 +83,18 @@ class _QuizPageState extends State<QuizPage> {
                   child: TextButton(
                     style: ButtonStyle(
                       backgroundColor: WidgetStateProperty.all(Colors.green),
-                      shape: MaterialStateProperty.all(const StadiumBorder()),
+                      shape: WidgetStateProperty.all(const StadiumBorder()),
                     ),
                     onPressed: () {
                       setState(() {
-                        scoreKeeper.add(const Icon(Icons.check,
-                            color: Colors.green, size: 50.0));
-                        bool correctAnswer = answers[currentQuestionindex];
+                        bool correctAnswer = questionAnswer;
                         if (correctAnswer == true) {
+                          scoreKeeper.add(const Icon(Icons.check,
+                              color: Colors.green, size: 50.0));
                           print('user got it right');
                         } else {
+                          scoreKeeper.add(const Icon(Icons.close,
+                              color: Colors.red, size: 50.0));
                           print('user got it wrong');
                         }
 
@@ -94,7 +111,7 @@ class _QuizPageState extends State<QuizPage> {
                       // ignore: avoid_print
                       print('true button pressed');
                     },
-                    child: const Text(
+                    child: Text(
                       'True',
                       style: TextStyle(
                           color: Colors.white,
@@ -111,12 +128,14 @@ class _QuizPageState extends State<QuizPage> {
                     child: TextButton(
                       onPressed: () {
                         setState(() {
-                          scoreKeeper.add(const Icon(Icons.close,
-                              color: Colors.red, size: 50.0));
-                          bool correctAnswer = answers[currentQuestionindex];
+                          bool correctAnswer = questionAnswer;
                           if (correctAnswer == false) {
+                            scoreKeeper.add(const Icon(Icons.check,
+                                color: Colors.green, size: 50.0));
                             print('user got it right');
                           } else {
+                            scoreKeeper.add(const Icon(Icons.close,
+                                color: Colors.red, size: 50.0));
                             print('user got it wrong');
                           }
                           if (currentQuestionindex == 3) {
@@ -150,15 +169,6 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 }
-
-
-
-// class QuizPage extends StatefulWidget {
-//   const QuizPage({super.key});
-
-//   @override
-//   _QuizPageState createState() => _QuizPageState();
-// }
 
 // class _QuizPageState extends State<QuizPage> {
 //   @override
